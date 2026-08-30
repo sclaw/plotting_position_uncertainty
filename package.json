@@ -1,0 +1,37 @@
+{
+  "name": "plotting-position-uncertainty",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Interactive playground for hydrologic plotting positions",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext ts,tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "hydrology",
+    "plotting-positions",
+    "visualization"
+  ],
+  "author": "Scott Lawson",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/plotly.js": "^3.0.13",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^8.57.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.9.6",
+    "tailwindcss": "^3.4.4",
+    "typescript": "^5.5.2",
+    "vite": "^5.3.1"
+  },
+  "dependencies": {
+    "jstat": "^1.9.6",
+    "plotly.js-dist-min": "^2.32.0"
+  }
+}

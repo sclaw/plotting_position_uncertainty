@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="https://raw.githubusercontent.com/Dewberry/hydroshift/refs/heads/main/hydroshift/images/favicon.ico"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Interactive playground for exploring hydrologic plotting position formulas"
+    />
+    <title>Plotting Position Playground</title>
+  </head>
+  <body>
+    <div class="min-h-screen p-4 md:p-8 bg-gray-900 transition-colors">
+      <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="mb-8">
+          <h1 class="text-4xl font-bold text-white mb-2">
+            Plotting Position Sandbox
+          </h1>
+          <p class="text-gray-400">
+            Visualize sampling uncertainty in order statistics
+          </p>
+        </header>
+
+        <!-- Main Content Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+          <!-- Controls Card -->
+          <div class="lg:col-span-4 card bg-gray-800">
+            <h2 class="text-xl font-semibold mb-4 text-white">Settings</h2>
+
+            <!-- Sample Size -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Sample Size:
+              </label>
+              <div class="flex items-center gap-2">
+                <button
+                  id="decrease-sample-size"
+                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
+                  aria-label="Decrease sample size"
+                >
+                  ÷2
+                </button>
+                <input
+                  type="number"
+                  id="sample-size"
+                  min="1"
+                  max="2000"
+                  value="20"
+                  class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  id="increase-sample-size"
+                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
+                  aria-label="Increase sample size"
+                >
+                  x2
+                </button>
+              </div>
+            </div>
+
+            <!-- Sampling Mode Toggle -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-300 mb-3">
+                Sampling Mode:
+              </label>
+              <div
+                class="flex items-center justify-between p-4 bg-gray-700 border border-gray-600 rounded-lg"
+              >
+                <div class="flex items-center gap-3">
+                  <span class="text-white text-sm">True Quantiles</span>
+                  <label
+                    class="relative inline-flex items-center cursor-pointer"
+                  >
+                    <input
+                      type="checkbox"
+                      id="sampling-mode-toggle"
+                      class="sr-only peer"
+                    />
+                    <div
+                      class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"
+                    ></div>
+                  </label>
+                  <span class="text-white text-sm">Random Samples</span>
+                </div>
+                <button
+                  id="randomize-btn"
+                  class="hidden px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                >
+                  Randomize
+                </button>
+              </div>
+            </div>
+
+            <!-- Distribution Selection -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-300 mb-3">
+                Select Distribution:
+              </label>
+              <div
+                id="distribution-selector"
+                class="bg-gray-700 border border-gray-600 rounded-lg"
+              ></div>
+            </div>
+
+            <!-- Formula Selection -->
+            <div class="relative">
+              <label class="block text-sm font-medium text-gray-300 mb-3">
+                Select Plotting Position Method:
+              </label>
+              <div id="formula-selector" class="relative"></div>
+            </div>
+          </div>
+
+          <!-- Plot Card -->
+          <div class="lg:col-span-8 card bg-gray-800">
+            <div id="plot" class="w-full" style="height: 600px"></div>
+          </div>
+        </div>
+
+        <!-- Info Card -->
+        <div class="card mt-6 bg-gray-800">
+          <h2 class="text-xl font-semibold mb-3 text-white">
+            Understanding Uncertainty in Order Statistics
+          </h2>
+          <p class="text-gray-300 mb-3">
+            When we sample from a probability distribution, each observation's
+            rank position carries inherent uncertainty. The beta distribution
+            provides the theoretical framework for modeling this uncertainty in
+            order statistics—the ranked values from a random sample.
+          </p>
+          <p class="text-gray-300 mb-3">
+            Plotting position formulas (Weibull, Cunnane, etc.) estimate the
+            exceedance probability for each ranked observation. These formulas
+            are actually approximations of the expected value of a
+            beta-distributed random variable representing the true quantile
+            position.
+          </p>
+          <p class="text-gray-300">
+            Use this tool to explore how sampling uncertainty affects extreme
+            value estimates and see how the beta distribution captures the range
+            of plausible positions for each observation.
+          </p>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-8 text-center text-gray-400 text-sm">
+          <p>Built with Vite, TypeScript, and Plotly.js</p>
+        </footer>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

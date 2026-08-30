@@ -1,0 +1,22 @@
+declare module 'jstat' {
+  export interface JStatStatic {
+    beta: {
+      inv(p: number, alpha: number, beta: number): number;
+    };
+    normal: {
+      inv(p: number, mean: number, std: number): number;
+    };
+    exponential: {
+      inv(p: number, rate: number): number;
+    };
+    weibull: {
+      inv(p: number, shape: number, scale: number): number;
+    };
+    pareto: {
+      inv(p: number, scale: number, shape: number): number;
+    };
+  }
+
+  const jStat: JStatStatic;
+  export default jStat;
+}
