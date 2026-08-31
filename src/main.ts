@@ -44,6 +44,11 @@ function createDistributionSelector() {
 
   const distributions = [
     {
+      value: 'lp3',
+      label: 'Log-Pearson Type 3',
+      description: 'Log-Pearson Type 3 (μ=2, σ=5, γ=0.5)',
+    },
+    {
       value: 'exponential',
       label: 'Exponential',
       description: 'Exponential distribution (λ=5)',
@@ -145,6 +150,9 @@ function generateRandomSamples() {
     let value: number;
 
     switch (selectedDistribution) {
+      case 'lp3':
+        value = log_pearson_3_inv(u, 2, 5, 0.5);
+        break;
       case 'weibull':
         value = jStat.weibull.inv(u, 2, 5);
         break;
@@ -303,6 +311,17 @@ function handleFormulaToggle() {
   updatePlot();
 }
 
+function log_pearson_3_inv(
+  p: number,
+  mu: number,
+  sigma: number,
+  gamma: number,
+  base: number = 10
+): number {
+  const k = (2 / gamma) * (1 + (p * gamma) / 6 - gamma ** 2 / 36) - 2 / gamma;
+  return base ** (mu + sigma * k);
+}
+
 /**
  * Update the plot with current settings
  */
@@ -322,6 +341,9 @@ function updatePlot() {
     // Use evenly spaced quantiles
     const percentiles = Array.from({ length: n }, (_, i) => (i + 1) / (n + 1));
     switch (selectedDistribution) {
+      case 'lp3':
+        rvs = percentiles.map((p) => log_pearson_3_inv(p, 2, 5, 0.5));
+        break;
       case 'weibull':
         rvs = percentiles.map((p) => jStat.weibull.inv(p, 2, 5));
         break;
@@ -410,6 +432,11 @@ function updatePlot() {
   const trueDistProbs = Array.from({ length: 100 }, (_, i) => (i + 1) / 101);
   let trueDistValues: number[];
   switch (selectedDistribution) {
+    case 'lp3':
+      trueDistValues = trueDistProbs.map((p) =>
+        log_pearson_3_inv(p, 2, 5, 0.5)
+      );
+      break;
     case 'weibull':
       trueDistValues = trueDistProbs.map((p) => jStat.weibull.inv(p, 2, 5));
       break;
