@@ -129,23 +129,105 @@
             Understanding Uncertainty in Order Statistics
           </h2>
           <p class="text-gray-300 mb-3">
-            When we sample from a probability distribution, each observation's
-            rank position carries inherent uncertainty. The beta distribution
-            provides the theoretical framework for modeling this uncertainty in
-            order statistics—the ranked values from a random sample.
+            Given a finite sample of data, how much should I trust that sample
+            to represent the underlying population? This is one of the
+            fundamental questions of statistical inference. Many people are
+            familiar with methods to get uncertainty around parameters like mean
+            and variance or uncertainty in a fitted distribution, but what about
+            order statistics such as the 50th percentile?
           </p>
           <p class="text-gray-300 mb-3">
-            Plotting position formulas (Weibull, Cunnane, etc.) estimate the
-            exceedance probability for each ranked observation. These formulas
-            are actually approximations of the expected value of a
-            beta-distributed random variable representing the true quantile
-            position.
+            The answer, it turns out, is clean and has a closed form: the Beta
+            distribution. For any finite sample of size n, the probability that
+            the ith smallest element is a certain percentile (u) of the
+            underlying population is given by
           </p>
           <p class="text-gray-300">
-            Use this tool to explore how sampling uncertainty affects extreme
-            value estimates and see how the beta distribution captures the range
-            of plausible positions for each observation.
+            $$ f(p) = \frac{n!}{(i-1)!(n-i)!} p^{i-1}(1-p)^{n-i}, \qquad 0 &lt;
+            u &lt; 1 $$
           </p>
+          <p class="text-gray-300 mb-3">
+            This, as it turns out, is a beta pdf with $a=i$ and $b=n-i+1$.
+          </p>
+          <p class="text-gray-300 mb-3">
+            This is one of those results that felt too good to be true when I
+            first read about it (shout out to the Handbook of Hydrology).
+            Surely, I thought, this must be a case where they found the
+            distribution was approximately beta through numerical experiments.
+            There's no way this could be derived.
+          </p>
+          <hr class="my-6 border-gray-600" />
+          <p class="text-gray-300 mb-3">
+            As it turns out, it's actually a very straightforward equation to
+            derive. Let's start with the fact that for any distribution,
+            percentiles are uniformly distributed on [0-1]. Let's consider the
+            20th percentile, or 0.2 on the support. When we sample from our
+            population, we can consider each sample a yes-no question: is this
+            sample below the 20th percentile? Conveniently, we know the
+            probability of this yes-no coin flip exactly: 0.2 yes and 0.8 no.
+            For the smallest value in our sample to be the 20th percentile, we
+            would need to have exactly n-1 successes. Similarly, for the second
+            smallest value in our sample to be the 20th percentile, we would
+            need to have exactly n-2 successes and 1 failure. Considering a
+            sample of n elements and accounting for any possible ordering of the
+            yes-no experiments, we can calculate this probability as
+          </p>
+          <p class="text-gray-300">
+            $$ \Pr(\text{sample is 20th percentile}) = \frac{n!}{(i-1)!(n-i)!}
+            0.2^{i-1}(0.8)^{n-i}$$
+          </p>
+          <p class="text-gray-300">
+            where i is a given elements rank in the sample. This matches our
+            original formulation.
+          </p>
+          <hr class="my-6 border-gray-600" />
+          <p class="text-gray-300 mb-3">
+            So what? Use the plotting position sandbox above to explore how
+            increasing sample size can increase our confidence in what
+            percentile a given sample value is.
+          </p>
+          <hr class="my-6 border-gray-600" />
+          <div class="mb-3">
+            <h3 class="text-lg font-semibold text-white mb-3">References</h3>
+            <ul class="list-disc list-inside space-y-2 text-gray-300">
+              <li>
+                <a
+                  href="https://actuarialmodelingtopics.wordpress.com/2016/04/11/the-beta-distribution-as-order-statistics/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-400 hover:text-blue-300 underline"
+                >
+                  The Beta Distribution as Order Statistics
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://probabilityandstats.wordpress.com/2010/02/20/the-distributions-of-the-order-statistics/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-400 hover:text-blue-300 underline"
+                >
+                  The Distributions of the Order Statistics
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://probabilityandstatsproblemsolve.wordpress.com/2015/04/06/calculating-the-probability-distributions-of-order-statistics/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-400 hover:text-blue-300 underline"
+                >
+                  Calculating the Probability Distributions of Order Statistics
+                </a>
+              </li>
+              <li>
+                Stedinger, J.R., Vogel, R.M. and Foufoula-Georgia, E. (1993)
+                Frequency Analysis of Extreme Events. Chapter 18. In Maidment,
+                D.R., Ed., <em>Handbook of Hydrology</em>, McGraw Hill, New
+                York, 18.1-18.66.
+              </li>
+            </ul>
+          </div>
         </div>
 
         <!-- Footer -->

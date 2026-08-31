@@ -1,4 +1,5 @@
 import './style.css';
+import './math';
 import Plotly from 'plotly.js-dist-min';
 import { allFormulas } from './plottingPositions';
 import jStat from 'jstat';
