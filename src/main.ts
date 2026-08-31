@@ -326,6 +326,13 @@ function log_pearson_3_inv(
  * Update the plot with current settings
  */
 function updatePlot() {
+  // TODO: refactor this messy func
+  // TODO: hovering on points on the plot should show AEP not standard normal z score
+  // TODO: allow user to adjust distribution parameters
+  // TODO: add normal distribution
+  // TODO: support other plotting paper?
+  // TODO: Add some sort of record of how often true dist was within beta x percent CI
+  // TODO: Add some sort of visualization or interactive plot for the binomial experiment analogy
   const n = parseInt(sampleSizeInput.value);
 
   // Get samples based on sampling mode
