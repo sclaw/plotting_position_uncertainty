@@ -1,5 +1,5 @@
 import 'katex/dist/katex.min.css';
-import renderMathInElement from 'katex/dist/contrib/auto-render';
+import renderMathInElement from 'katex/dist/contrib/auto-render.mjs';
 
 // Auto-render all LaTeX in the document
 renderMathInElement(document.body, {
