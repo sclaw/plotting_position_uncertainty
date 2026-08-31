@@ -547,7 +547,7 @@ function updatePlot() {
 
   const layout: Partial<Plotly.Layout> = {
     title: {
-      text: 'Plotting Position Comparison with Uncertainty',
+      text: 'Plotting Positions with Confidence Bounds',
       font: {
         size: 18,
         color: '#f3f4f6',
