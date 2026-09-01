@@ -330,3 +330,16 @@ function handleRunMonteCarlo(): void {
 
 // Initialize app when DOM is ready
 document.addEventListener('DOMContentLoaded', init);
+
+// Handle window resize to update plot margins
+let resizeTimeout: number;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = window.setTimeout(() => {
+    updatePlot();
+    // Re-render Monte Carlo plot if it exists
+    if (mcPlotDiv && mcPlotDiv.childNodes.length > 0) {
+      handleRunMonteCarlo();
+    }
+  }, 250);
+});

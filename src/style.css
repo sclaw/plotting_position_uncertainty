@@ -37,3 +37,32 @@ input[type='number'] {
   -moz-appearance: textfield;
   appearance: textfield;
 }
+
+/* Math formula overflow handling for mobile */
+.overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-auto .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+/* Ensure Plotly plots are responsive */
+#plot,
+#mc-plot {
+  width: 100% !important;
+}
+
+/* Better touch targets for mobile */
+@media (max-width: 640px) {
+  button,
+  input,
+  select {
+    min-height: 44px;
+  }
+  
+  .card {
+    @apply p-4;
+  }
+}

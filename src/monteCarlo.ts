@@ -83,10 +83,18 @@ export function renderMonteCarloPlot(
     hoverinfo: 'skip',
   };
 
+  // Responsive margins and title size based on screen size
+  const isMobile = window.innerWidth < 640;
+  const leftMargin = isMobile ? 45 : 60;
+  const rightMargin = isMobile ? 20 : 40;
+  const topMargin = isMobile ? 50 : 60;
+  const bottomMargin = isMobile ? 50 : 60;
+  const titleSize = isMobile ? 13 : 16;
+
   const layout: Partial<Plotly.Layout> = {
     title: {
       text: `Distribution of Percentiles for Order Statistic ${orderStatistic} of ${n}`,
-      font: { color: '#ffffff', size: 16 },
+      font: { color: '#ffffff', size: titleSize },
     },
     xaxis: {
       title: { text: 'Percentile in True Distribution' },
@@ -112,12 +120,12 @@ export function renderMonteCarloPlot(
       bordercolor: '#4B5563',
       borderwidth: 1,
     },
-    margin: { l: 60, r: 40, t: 60, b: 60 },
+    margin: { l: leftMargin, r: rightMargin, t: topMargin, b: bottomMargin },
   };
 
   const config: Partial<Plotly.Config> = {
     responsive: true,
-    displayModeBar: true,
+    displayModeBar: isMobile ? 'hover' : true,
     displaylogo: false,
   };
 

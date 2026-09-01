@@ -267,11 +267,19 @@ function createPlotLayout(
   aepTicks: FilteredTick[],
   returnPeriodTicks: FilteredTick[]
 ): Partial<Plotly.Layout> {
+  // Responsive margins based on screen size
+  const isMobile = window.innerWidth < 640;
+  const leftMargin = isMobile ? 50 : 120;
+  const topMargin = isMobile ? 100 : 130;
+  const rightMargin = isMobile ? 10 : 20;
+  const bottomMargin = isMobile ? 50 : 60;
+  const titleSize = isMobile ? 14 : 18;
+
   return {
     title: {
       text: 'Plotting Positions with Confidence Bounds',
       font: {
-        size: 18,
+        size: titleSize,
         color: '#f3f4f6',
       },
     },
@@ -338,7 +346,7 @@ function createPlotLayout(
     },
     plot_bgcolor: '#1f2937',
     paper_bgcolor: '#1f2937',
-    margin: { t: 130, r: 20, b: 60, l: 120 },
+    margin: { t: topMargin, r: rightMargin, b: bottomMargin, l: leftMargin },
     hovermode: false,
     showlegend: true,
     legend: {
@@ -441,9 +449,10 @@ export function renderPlot(
   const layout = createPlotLayout(aepTicks, returnPeriodTicks);
 
   // Create config
+  const isMobile = window.innerWidth < 640;
   const config: Partial<Plotly.Config> = {
     responsive: true,
-    displayModeBar: true,
+    displayModeBar: isMobile ? 'hover' : true,
     displaylogo: false,
     modeBarButtonsToRemove: [
       'lasso2d',
