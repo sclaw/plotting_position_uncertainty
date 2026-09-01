@@ -321,7 +321,6 @@ function handleRunMonteCarlo(): void {
     n,
     repetitions,
     orderStatistic,
-    state.selectedFormula,
     params
   );
 

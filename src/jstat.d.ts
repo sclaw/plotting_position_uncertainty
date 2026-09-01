@@ -2,6 +2,7 @@ declare module 'jstat' {
   export interface JStatStatic {
     beta: {
       inv(p: number, alpha: number, beta: number): number;
+      pdf(x: number, alpha: number, beta: number): number;
     };
     normal: {
       inv(p: number, mean: number, std: number): number;

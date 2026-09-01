@@ -16,7 +16,6 @@ export function runMonteCarloSimulation(
   n: number,
   repetitions: number,
   orderStatistic: number,
-  formulaName: string,
   params?: any
 ): number[] {
   const percentiles: number[] = [];
@@ -54,7 +53,7 @@ export function renderMonteCarloPlot(
   const b = n - orderStatistic + 1;
 
   // Create histogram trace with dynamic bins based on repetitions
-  const histogramTrace: Partial<Plotly.PlotData> = {
+  const histogramTrace: any = {
     x: percentiles,
     type: 'histogram',
     name: 'Simulated',
@@ -90,13 +89,13 @@ export function renderMonteCarloPlot(
       font: { color: '#ffffff', size: 16 },
     },
     xaxis: {
-      title: 'Percentile in True Distribution',
+      title: { text: 'Percentile in True Distribution' },
       gridcolor: '#374151',
       color: '#9CA3AF',
       range: [0, 1],
     },
     yaxis: {
-      title: 'Probability Density',
+      title: { text: 'Probability Density' },
       gridcolor: '#374151',
       color: '#9CA3AF',
     },
