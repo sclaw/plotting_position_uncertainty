@@ -33,6 +33,62 @@
           <div class="lg:col-span-4 card bg-gray-800">
             <h2 class="text-xl font-semibold mb-4 text-white">Settings</h2>
 
+            <!-- Distribution Selection -->
+            <div class="mb-6">
+              <details
+                class="bg-gray-700 border border-gray-600 rounded-lg group"
+                closed
+              >
+                <summary
+                  id="distribution-summary"
+                  class="px-4 py-3 cursor-pointer select-none hover:bg-gray-650 transition-colors rounded-lg list-none flex items-center justify-between"
+                >
+                  <div class="flex-1">
+                    <div class="text-sm font-medium text-gray-400 mb-1">
+                      Distribution
+                    </div>
+                    <div
+                      class="text-white font-medium"
+                      id="distribution-summary-text"
+                    >
+                      Exponential (λ=5)
+                    </div>
+                  </div>
+                  <svg
+                    class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M19 9l-7 7-7-7"
+                    ></path>
+                  </svg>
+                </summary>
+                <div class="border-t border-gray-600">
+                  <div class="p-4 space-y-4">
+                    <div>
+                      <label
+                        class="block text-sm font-medium text-gray-300 mb-2"
+                      >
+                        Select Distribution:
+                      </label>
+                      <select
+                        id="distribution-selector"
+                        class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                      ></select>
+                    </div>
+                    <div id="distribution-parameters" class="space-y-3">
+                      <!-- Parameter inputs will be inserted here -->
+                    </div>
+                  </div>
+                </div>
+              </details>
+            </div>
+
             <!-- Sample Size -->
             <div class="mb-6">
               <label class="block text-sm font-medium text-gray-300 mb-2">
@@ -61,60 +117,18 @@
                 >
                   x2
                 </button>
-              </div>
-            </div>
-
-            <!-- Sampling Mode Toggle -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-300 mb-3">
-                Sampling Mode:
-              </label>
-              <div
-                class="flex items-center justify-between p-4 bg-gray-700 border border-gray-600 rounded-lg"
-              >
-                <div class="flex items-center gap-3">
-                  <span class="text-white text-sm">True Quantiles</span>
-                  <label
-                    class="relative inline-flex items-center cursor-pointer"
-                  >
-                    <input
-                      type="checkbox"
-                      id="sampling-mode-toggle"
-                      class="sr-only peer"
-                    />
-                    <div
-                      class="w-11 h-6 bg-gray-600 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-500"
-                    ></div>
-                  </label>
-                  <span class="text-white text-sm">Random Samples</span>
-                </div>
                 <button
                   id="randomize-btn"
-                  class="hidden px-3 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                  class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                  aria-label="Randomize samples"
                 >
-                  Randomize
+                  Resample
                 </button>
               </div>
             </div>
 
-            <!-- Distribution Selection -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-300 mb-3">
-                Select Distribution:
-              </label>
-              <div
-                id="distribution-selector"
-                class="bg-gray-700 border border-gray-600 rounded-lg"
-              ></div>
-            </div>
-
             <!-- Formula Selection -->
-            <div class="relative">
-              <label class="block text-sm font-medium text-gray-300 mb-3">
-                Select Plotting Position Method:
-              </label>
-              <div id="formula-selector" class="relative"></div>
-            </div>
+            <div id="formula-selector" class="relative"></div>
           </div>
 
           <!-- Plot Card -->
