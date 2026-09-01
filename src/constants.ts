@@ -20,6 +20,7 @@ export const PLOT_COLORS = [
 ] as const;
 
 export const BETA_COLOR = '#3b82f6';
+export const MONTE_CARLO_BETA_COLOR = '#a855f7';
 export const TRUE_DIST_COLOR = '#ef4444';
 
 // Confidence levels for beta distribution uncertainty bands

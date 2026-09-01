@@ -121,6 +121,7 @@ function createTrueDistributionTrace(
       dash: 'solid',
     },
     showlegend: true,
+    hoverinfo: 'skip',
   };
 }
 
@@ -152,6 +153,7 @@ function createPlottingPositionTraces(
           line: { width: 1, color: '#000000' },
         },
         line: { width: 2, color: color },
+        hoverinfo: 'skip',
       };
     });
 }
@@ -337,7 +339,7 @@ function createPlotLayout(
     plot_bgcolor: '#1f2937',
     paper_bgcolor: '#1f2937',
     margin: { t: 130, r: 20, b: 60, l: 120 },
-    hovermode: 'closest',
+    hovermode: false,
     showlegend: true,
     legend: {
       x: 0.02,
@@ -408,11 +410,7 @@ export function renderPlot(
         line: { width: 2, color: '#3b82f6' },
       },
       showlegend: false,
-      hovertemplate:
-        '<b>Value:</b> %{customdata[0]:.2f}<br>' +
-        '<b>Plotting AEP:</b> %{customdata[1]:.2%}<br>' +
-        '<extra></extra>',
-      customdata: rvs.map((rv, i) => [rv, plottingAEPs[i]]),
+      hoverinfo: 'skip',
     });
 
     traces.push({
@@ -428,11 +426,7 @@ export function renderPlot(
         line: { width: 2, color: TRUE_DIST_COLOR },
       },
       showlegend: false,
-      hovertemplate:
-        '<b>Value:</b> %{customdata[0]:.2f}<br>' +
-        '<b>Distribution AEP:</b> %{customdata[1]:.2%}<br>' +
-        '<extra></extra>',
-      customdata: rvs.map((rv, i) => [rv, trueAEPs[i]]),
+      hoverinfo: 'skip',
     });
   }
 
