@@ -154,7 +154,7 @@
           </p>
           <p class="text-gray-300">
             $$ f(p) = \frac{n!}{(i-1)!(n-i)!} p^{i-1}(1-p)^{n-i}, \qquad 0 &lt;
-            u &lt; 1 $$
+            p &lt; 1 $$
           </p>
           <p class="text-gray-300 mb-3">
             This, as it turns out, is a beta pdf with $a=i$ and $b=n-i+1$.
@@ -176,9 +176,9 @@
             sample below the 20th percentile? Conveniently, we know the
             probability of this yes-no coin flip exactly: 0.2 yes and 0.8 no.
             For the smallest value in our sample to be the 20th percentile, we
-            would need to have exactly n-1 successes. Similarly, for the second
+            would need to have exactly n-1 failures. Similarly, for the second
             smallest value in our sample to be the 20th percentile, we would
-            need to have exactly n-2 successes and 1 failure. Considering a
+            need to have exactly n-2 failures and 1 success. Considering a
             sample of n elements and accounting for any possible ordering of the
             yes-no experiments, we can calculate this probability as
           </p>
