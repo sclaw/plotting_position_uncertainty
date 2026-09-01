@@ -16,8 +16,12 @@ export function logPearson3Inv(
   gamma: number = DIST_PARAMS.LP3.gamma,
   base: number = DIST_PARAMS.LP3.base
 ): number {
-  const k = (2 / gamma) * (1 + (p * gamma) / 6 - gamma ** 2 / 36) - 2 / gamma;
-  return base ** (mu + sigma * k);
+  if (gamma == 0) {
+    return base ** jStat.normal.inv(p, mu, sigma);
+  } else {
+    const k = (2 / gamma) * (1 + (p * gamma) / 6 - gamma ** 2 / 36) - 2 / gamma;
+    return base ** (mu + sigma * k);
+  }
 }
 
 /**

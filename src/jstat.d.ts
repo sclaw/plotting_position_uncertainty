@@ -8,12 +8,15 @@ declare module 'jstat' {
     };
     exponential: {
       inv(p: number, rate: number): number;
+      cdf(x: number, rate: number): number;
     };
     weibull: {
       inv(p: number, shape: number, scale: number): number;
+      cdf(x: number, shape: number, scale: number): number;
     };
     pareto: {
       inv(p: number, scale: number, shape: number): number;
+      cdf(x: number, scale: number, shape: number): number;
     };
   }
 

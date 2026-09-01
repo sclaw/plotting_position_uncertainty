@@ -13,10 +13,12 @@ import {
   CONFIDENCE_LEVELS,
   AEP_TICKS,
   RETURN_PERIOD_TICKS,
+  DIST_PARAMS,
 } from './constants';
 import {
   calculateBetaParameters,
   generateTrueDistribution,
+  logPearson3Inv,
 } from './distributions';
 
 /**
@@ -68,6 +70,7 @@ function createConfidenceBands(
     traces.push({
       x: lowerBand.map((p) => jStat.normal.inv(p, 0, 1)),
       y: rvs,
+      xaxis: 'x',
       mode: 'lines',
       line: { width: 0 },
       showlegend: false,
@@ -79,6 +82,7 @@ function createConfidenceBands(
     traces.push({
       x: upperBand.map((p) => jStat.normal.inv(p, 0, 1)),
       y: rvs,
+      xaxis: 'x',
       mode: 'lines',
       line: { width: 0 },
       fill: 'tonexty',
@@ -108,6 +112,7 @@ function createTrueDistributionTrace(
   return {
     x: probabilities.map((p) => jStat.normal.inv(p, 0, 1)),
     y: values,
+    xaxis: 'x',
     mode: 'lines',
     name: 'True Distribution',
     line: {
@@ -138,6 +143,7 @@ function createPlottingPositionTraces(
           .map((m) => formula.calculate(m, n))
           .map((p) => jStat.normal.inv(p, 0, 1)),
         y: rvs,
+        xaxis: 'x',
         mode: 'markers',
         name: formula.name,
         marker: {
@@ -148,6 +154,58 @@ function createPlottingPositionTraces(
         line: { width: 2, color: color },
       };
     });
+}
+
+/**
+ * Calculate the CDF (exceedance probability) for a value in the true distribution
+ */
+function calculateTrueCDF(
+  value: number,
+  distribution: DistributionType,
+  params?: any
+): number {
+  const p = params || {};
+
+  switch (distribution) {
+    case 'exponential':
+      const lambda = p.lambda ?? DIST_PARAMS.EXPONENTIAL.lambda;
+      return (jStat.exponential as any).cdf(value, lambda);
+    case 'weibull':
+      const k = p.k ?? DIST_PARAMS.WEIBULL.k;
+      const wLambda = p.lambda ?? DIST_PARAMS.WEIBULL.lambda;
+      return (jStat.weibull as any).cdf(value, k, wLambda);
+    case 'pareto':
+      const xm = p.xm ?? DIST_PARAMS.PARETO.xm;
+      const alpha = p.alpha ?? DIST_PARAMS.PARETO.alpha;
+      return 1 - (jStat.pareto as any).cdf(value, xm, alpha);
+    case 'lp3':
+      // For LP3, use binary search to find the probability
+      const mu = p.mu ?? DIST_PARAMS.LP3.mu;
+      const sigma = p.sigma ?? DIST_PARAMS.LP3.sigma;
+      const gamma = p.gamma ?? DIST_PARAMS.LP3.gamma;
+      const base = p.base ?? DIST_PARAMS.LP3.base;
+
+      let low = 0.0001;
+      let high = 0.9999;
+      let mid: number;
+      const tolerance = 0.0001;
+
+      for (let i = 0; i < 50; i++) {
+        mid = (low + high) / 2;
+        const testValue = logPearson3Inv(mid, mu, sigma, gamma, base);
+        if (Math.abs(testValue - value) < tolerance) {
+          return 1 - mid;
+        }
+        if (testValue < value) {
+          low = mid;
+        } else {
+          high = mid;
+        }
+      }
+      return 1 - (low + high) / 2;
+    default:
+      return 0.5;
+  }
 }
 
 /**
@@ -162,6 +220,7 @@ function createDummyTrace(
     x: [minX, maxX],
     y: [firstYValue, firstYValue],
     xaxis: 'x2',
+    yaxis: 'y',
     mode: 'markers',
     marker: { size: 0, opacity: 0 },
     showlegend: false,
@@ -221,6 +280,10 @@ function createPlotLayout(
       tickmode: 'array',
       tickvals: aepTicks.map((t) => t.val),
       ticktext: aepTicks.map((t) => t.label),
+      domain: [0, 1],
+      anchor: 'y',
+      side: 'bottom',
+      showgrid: true,
     },
     xaxis2: {
       title: {
@@ -236,15 +299,44 @@ function createPlotLayout(
       showgrid: false,
       scaleanchor: 'x',
     },
+    xaxis3: {
+      title: { text: 'Annual Exceedance Probability' },
+      gridcolor: '#374151',
+      color: '#d1d5db',
+      tickmode: 'array',
+      tickvals: aepTicks.map((t) => t.val),
+      ticktext: aepTicks.map((t) => t.label),
+      domain: [0, 1],
+      anchor: 'y3',
+      side: 'bottom',
+      showgrid: false,
+      matches: 'x',
+    },
     yaxis: {
       title: { text: 'Value' },
       gridcolor: '#374151',
       color: '#d1d5db',
       type: 'log',
+      domain: [0.33, 1],
+      anchor: 'x',
+    },
+    yaxis3: {
+      title: {
+        text: '',
+        standoff: 0,
+      },
+      tickmode: 'array',
+      tickvals: [0, 1],
+      ticktext: ['True AEP', 'Plotting Position'],
+      tickfont: { size: 11, color: '#d1d5db' },
+      domain: [0, 0.16],
+      anchor: 'x3',
+      range: [-0.5, 1.5],
+      showgrid: false,
     },
     plot_bgcolor: '#1f2937',
     paper_bgcolor: '#1f2937',
-    margin: { t: 130, r: 20, b: 60, l: 60 },
+    margin: { t: 130, r: 20, b: 60, l: 120 },
     hovermode: 'closest',
     showlegend: true,
     legend: {
@@ -270,8 +362,9 @@ export function renderPlot(
 ): void {
   const n = rvs.length;
   const ranks = Array.from({ length: n }, (_, i) => i + 1);
+  const formula = allFormulas.find((f) => f.name === selectedFormula);
 
-  // Build all traces
+  // Build main plot traces
   const traces: Partial<Plotly.PlotData>[] = [];
 
   // Add confidence bands
@@ -285,6 +378,64 @@ export function renderPlot(
 
   // Calculate data range for axis ticks
   const allXValues = traces.flatMap((trace) => (trace.x as number[]) || []);
+
+  // Add rug plot traces if formula is available
+  if (formula) {
+    // Calculate plotting position AEPs
+    const plottingAEPs = ranks.map((m) => formula.calculate(m, n));
+    const plottingX = plottingAEPs.map((p) => jStat.normal.inv(p, 0, 1));
+
+    // Calculate true distribution AEPs
+    const trueAEPs = rvs.map((value) =>
+      calculateTrueCDF(value, selectedDistribution, params)
+    );
+    const trueX = trueAEPs.map((p) => jStat.normal.inv(p, 0, 1));
+
+    // Add to all x values for axis calculation
+    allXValues.push(...plottingX, ...trueX);
+
+    // Add rug plot traces (on yaxis3)
+    traces.push({
+      x: plottingX,
+      y: Array(n).fill(1),
+      yaxis: 'y3',
+      mode: 'markers',
+      name: 'Plotting Position AEP',
+      marker: {
+        symbol: 'line-ns-open',
+        size: 14,
+        color: '#3b82f6',
+        line: { width: 2, color: '#3b82f6' },
+      },
+      showlegend: false,
+      hovertemplate:
+        '<b>Value:</b> %{customdata[0]:.2f}<br>' +
+        '<b>Plotting AEP:</b> %{customdata[1]:.2%}<br>' +
+        '<extra></extra>',
+      customdata: rvs.map((rv, i) => [rv, plottingAEPs[i]]),
+    });
+
+    traces.push({
+      x: trueX,
+      y: Array(n).fill(0),
+      yaxis: 'y3',
+      mode: 'markers',
+      name: 'True Distribution AEP',
+      marker: {
+        symbol: 'line-ns-open',
+        size: 14,
+        color: TRUE_DIST_COLOR,
+        line: { width: 2, color: TRUE_DIST_COLOR },
+      },
+      showlegend: false,
+      hovertemplate:
+        '<b>Value:</b> %{customdata[0]:.2f}<br>' +
+        '<b>Distribution AEP:</b> %{customdata[1]:.2%}<br>' +
+        '<extra></extra>',
+      customdata: rvs.map((rv, i) => [rv, trueAEPs[i]]),
+    });
+  }
+
   const { aepTicks, returnPeriodTicks } = calculateAxisTicks(allXValues);
 
   // Add dummy trace for secondary x-axis

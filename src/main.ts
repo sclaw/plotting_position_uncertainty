@@ -82,6 +82,7 @@ function initializeUI(): void {
  */
 function handleDistributionChange(distribution: DistributionType): void {
   state.selectedDistribution = distribution;
+  regenerateRandomSamples();
   updatePlot();
 }
 

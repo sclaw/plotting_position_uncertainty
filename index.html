@@ -20,18 +20,53 @@
         <!-- Header -->
         <header class="mb-8">
           <h1 class="text-4xl font-bold text-white mb-2">
-            Plotting Position Sandbox
+            Explore Sampling Uncertainty in Order Statistics
           </h1>
-          <p class="text-gray-400">
-            Visualize sampling uncertainty in order statistics
-          </p>
         </header>
 
         <!-- Main Content Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
           <!-- Controls Card -->
-          <div class="lg:col-span-4 card bg-gray-800">
+          <div class="lg:col-span-3 card bg-gray-800">
             <h2 class="text-xl font-semibold mb-4 text-white">Settings</h2>
+
+            <!-- Sample Size -->
+            <div class="mb-6">
+              <label class="block text-sm font-medium text-gray-300 mb-2">
+                Sample Size:
+              </label>
+              <div class="flex items-center gap-2 mb-3">
+                <button
+                  id="decrease-sample-size"
+                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
+                  aria-label="Decrease sample size"
+                >
+                  ÷2
+                </button>
+                <input
+                  type="number"
+                  id="sample-size"
+                  min="1"
+                  max="2000"
+                  value="20"
+                  class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button
+                  id="increase-sample-size"
+                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
+                  aria-label="Increase sample size"
+                >
+                  x2
+                </button>
+              </div>
+              <button
+                id="randomize-btn"
+                class="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
+                aria-label="Randomize samples"
+              >
+                Resample
+              </button>
+            </div>
 
             <!-- Distribution Selection -->
             <div class="mb-6">
@@ -48,7 +83,7 @@
                       Distribution
                     </div>
                     <div
-                      class="text-white font-medium"
+                      class="text-white text-sm font-medium"
                       id="distribution-summary-text"
                     >
                       Exponential (λ=5)
@@ -78,7 +113,7 @@
                       </label>
                       <select
                         id="distribution-selector"
-                        class="w-full px-4 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                        class="w-full px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
                       ></select>
                     </div>
                     <div id="distribution-parameters" class="space-y-3">
@@ -89,50 +124,12 @@
               </details>
             </div>
 
-            <!-- Sample Size -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-300 mb-2">
-                Sample Size:
-              </label>
-              <div class="flex items-center gap-2">
-                <button
-                  id="decrease-sample-size"
-                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
-                  aria-label="Decrease sample size"
-                >
-                  ÷2
-                </button>
-                <input
-                  type="number"
-                  id="sample-size"
-                  min="1"
-                  max="2000"
-                  value="20"
-                  class="flex-1 px-4 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <button
-                  id="increase-sample-size"
-                  class="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-colors font-bold text-sm"
-                  aria-label="Increase sample size"
-                >
-                  x2
-                </button>
-                <button
-                  id="randomize-btn"
-                  class="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors text-sm font-medium"
-                  aria-label="Randomize samples"
-                >
-                  Resample
-                </button>
-              </div>
-            </div>
-
             <!-- Formula Selection -->
             <div id="formula-selector" class="relative"></div>
           </div>
 
           <!-- Plot Card -->
-          <div class="lg:col-span-8 card bg-gray-800">
+          <div class="lg:col-span-9 card bg-gray-800">
             <div id="plot" class="w-full" style="height: 600px"></div>
           </div>
         </div>
@@ -143,12 +140,11 @@
             Understanding Uncertainty in Order Statistics
           </h2>
           <p class="text-gray-300 mb-3">
-            Given a finite sample of data, how much should I trust that sample
-            to represent the underlying population? This is one of the
-            fundamental questions of statistical inference. Many people are
-            familiar with methods to get uncertainty around parameters like mean
-            and variance or uncertainty in a fitted distribution, but what about
-            order statistics such as the 50th percentile?
+            How much should I trust a finite sample to represent its underlying
+            population? Many of us are familiar with methods to get uncertainty
+            around parameters like mean and variance or uncertainty in a fitted
+            distribution, but what about order statistics such as the 50th
+            percentile?
           </p>
           <p class="text-gray-300 mb-3">
             The answer, it turns out, is clean and has a closed form: the Beta

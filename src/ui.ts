@@ -66,7 +66,7 @@ function updateParameterInputs(
   > = {
     lp3: [
       { key: 'mu', label: 'Mean (μ)', symbol: 'μ' },
-      { key: 'sigma', label: 'Standard Deviation (σ)', symbol: 'σ' },
+      { key: 'sigma', label: 'Std. Dev. (σ)', symbol: 'σ' },
       { key: 'gamma', label: 'Skew (γ)', symbol: 'γ' },
       { key: 'base', label: 'Log Base', symbol: 'base' },
     ],
@@ -96,7 +96,7 @@ function updateParameterInputs(
     inputGroup.className = 'flex items-center gap-2';
 
     const labelEl = document.createElement('label');
-    labelEl.className = 'text-sm text-gray-300 w-40';
+    labelEl.className = 'text-sm text-gray-300 flex-shrink-0 w-32';
     labelEl.textContent = label;
 
     const input = document.createElement('input');
@@ -105,7 +105,7 @@ function updateParameterInputs(
     input.min = key === 'base' ? '2' : '0.01';
     input.value = String(currentParams[distribution][key]);
     input.className =
-      'flex-1 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
+      'flex-1 min-w-0 px-3 py-2 bg-gray-800 border border-gray-600 rounded-lg text-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent';
 
     input.addEventListener('change', () => {
       const value = parseFloat(input.value);
@@ -183,7 +183,7 @@ export function createFormulaSelector(
   summary.innerHTML = `
     <div class="flex-1">
       <div class="text-sm font-medium text-gray-400 mb-1">Plotting Position Method</div>
-      <div class="text-white font-medium" id="formula-summary-text">${selectedFormula}</div>
+      <div class="text-white text-sm font-medium" id="formula-summary-text">${selectedFormula}</div>
     </div>
     <svg class="w-5 h-5 text-gray-400 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
