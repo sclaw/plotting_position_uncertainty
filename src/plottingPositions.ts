@@ -28,7 +28,7 @@ export const median: PlottingPositionFormula = {
 export const apl: PlottingPositionFormula = {
   name: 'APL',
   description: 'P = (i-0.35)/n - Used with Probability Weighted Moments (PWMs)',
-  calculate: (m: number, n: number) => (m - 0.5) / n,
+  calculate: (m: number, n: number) => (m - 0.35) / n,
 };
 
 export const blom: PlottingPositionFormula = {
