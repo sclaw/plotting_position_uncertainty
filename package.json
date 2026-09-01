@@ -2,7 +2,7 @@
   "name": "plotting-position-uncertainty",
   "version": "0.1.0",
   "type": "module",
-  "description": "Interactive playground for hydrologic plotting positions",
+  "description": "Interactive sandbox for hydrologic plotting positions",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
