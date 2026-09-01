@@ -6,6 +6,7 @@ declare module 'jstat' {
     };
     normal: {
       inv(p: number, mean: number, std: number): number;
+      cdf(x: number, mean: number, std: number): number;
     };
     exponential: {
       inv(p: number, rate: number): number;
