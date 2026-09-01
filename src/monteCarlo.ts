@@ -93,7 +93,7 @@ export function renderMonteCarloPlot(
 
   const layout: Partial<Plotly.Layout> = {
     title: {
-      text: `Distribution of Percentiles for Order Statistic ${orderStatistic} of ${n}`,
+      text: `Distribution of Percentiles for Observation ${orderStatistic} of ${n}`,
       font: { color: '#ffffff', size: titleSize },
     },
     xaxis: {
